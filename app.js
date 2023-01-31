@@ -2,7 +2,7 @@
  * @Author: zhangfeng16 zhangfeng16@shuidi-inc.com
  * @Date: 2022-12-26 15:20:22
  * @LastEditors: 流觞曲水 907523110@qq.com
- * @LastEditTime: 2023-01-31 18:20:16
+ * @LastEditTime: 2023-01-31 18:37:07
  * @FilePath: /zf-blog-server/app.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -18,23 +18,18 @@ const blog = require('./router/blog.js')
 const label = require('./router/label.js')
 const leaveMessage = require('./router/leaveMessage.js')
 const userInfo = require('./router/userInfo.js')
-
+const cors = require('cors')
 //  证书
 const options = {
   // key: fs.readFileSync('./static/SSL/9207781_zfblog.top.key'),
   // cert: fs.readFileSync('./static/SSL/9207781_zfblog.top.pem')
 }
-app.use(async (ctx, next) => {
-  ctx.set('Access-Control-Allow-Origin', '*')
-  ctx.set('Access-Control-Allow-Headers', 'content-type')
-  ctx.set('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE')
-  await next()
-  // 允许所有跨域
-  if (ctx.request.method === 'OPTIONS') {
-    console.log('跨域请求')
-    ctx.response.status = 200
-    ctx.response.message = 'OK'
-  }
+app.use(cors())
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Methods', 'GET,POST,DELETE')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested With, Content-Type, Accept')
+  next()
 })
 app.use(static('./static'))
 
