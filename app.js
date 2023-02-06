@@ -2,7 +2,7 @@
  * @Author: zhangfeng16 zhangfeng16@shuidi-inc.com
  * @Date: 2022-12-26 15:20:22
  * @LastEditors: 流觞曲水 907523110@qq.com
- * @LastEditTime: 2023-01-31 18:37:07
+ * @LastEditTime: 2023-02-06 14:44:45
  * @FilePath: /zf-blog-server/app.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -44,7 +44,6 @@ app.use(koaBody({
 
 //启动路由
 app.use(blog.routes()).use(label.routes()).use(leaveMessage.routes()).use(userInfo.routes())
-
 
 app.use(async ctx => {
     ctx.body = 'Hello koa'
