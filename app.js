@@ -2,7 +2,7 @@
  * @Author: zhangfeng16 zhangfeng16@shuidi-inc.com
  * @Date: 2022-12-26 15:20:22
  * @LastEditors: 流觞曲水 907523110@qq.com
- * @LastEditTime: 2023-02-06 15:39:31
+ * @LastEditTime: 2023-02-06 15:53:41
  * @FilePath: /zf-blog-server/app.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -13,7 +13,7 @@ const fs = require('fs')
 const https = require('http')
 const enforceHttps = require('koa-sslify')
 const app=new Koa()
-
+const cors = require('koa2-cors')
 const blog = require('./router/blog.js')
 const label = require('./router/label.js')
 const leaveMessage = require('./router/leaveMessage.js')
@@ -31,7 +31,7 @@ app.use(koaBody({
     maxFileSize: 200 * 1024 * 1024 // 设置上传文件大小最大限制，默认2M
   }
 }))
-
+app.use(cors())
 //启动路由
 app.use(blog.routes()).use(label.routes()).use(leaveMessage.routes()).use(userInfo.routes())
 
