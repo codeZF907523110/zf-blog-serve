@@ -2,14 +2,13 @@
  * @Author: zhangfeng16 zhangfeng16@shuidi-inc.com
  * @Date: 2022-12-26 15:20:22
  * @LastEditors: 流觞曲水 907523110@qq.com
- * @LastEditTime: 2023-02-06 17:33:44
+ * @LastEditTime: 2023-02-06 17:37:28
  * @FilePath: /zf-blog-server/app.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-const cors = require('./config/koa-cors')
+const cors = require('koa2-cors')
 const Koa=require('koa')
 const app = new Koa()
-app.use(cors)
 const koaBody=require('koa-body')
 const static= require('koa-static')
 const fs = require('fs')
@@ -36,7 +35,7 @@ app.use(koaBody({
 
 //启动路由
 app.use(blog.routes()).use(label.routes()).use(leaveMessage.routes()).use(userInfo.routes())
-
+app.use(cors())
 app.use(async ctx => {
   ctx.body = 'Hello koa'
 });
