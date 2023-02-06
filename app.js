@@ -12,8 +12,15 @@ const static= require('koa-static')
 const fs = require('fs')
 const https = require('http')
 const enforceHttps = require('koa-sslify')
-const app=new Koa()
+const app = new Koa()
 const cors = require('koa2-cors')
+app.use(cors({
+  origin:"*", // 允许来自指定域名请求
+  maxAge: 5, // 本次预检请求的有效期，单位为秒。
+  methods:['GET','POST'],  // 所允许的HTTP请求方法
+  alloweHeaders:['Conten-Type'], // 服务器支持的所有头信息字段
+  credentials: true // 是否允许发送Cookie
+}))
 const blog = require('./router/blog.js')
 const label = require('./router/label.js')
 const leaveMessage = require('./router/leaveMessage.js')
@@ -31,13 +38,7 @@ app.use(koaBody({
     maxFileSize: 200 * 1024 * 1024 // 设置上传文件大小最大限制，默认2M
   }
 }))
-app.use(cors({
-  origin:"*", // 允许来自指定域名请求
-  maxAge: 5, // 本次预检请求的有效期，单位为秒。
-  methods:['GET','POST'],  // 所允许的HTTP请求方法
-  alloweHeaders:['Conten-Type'], // 服务器支持的所有头信息字段
-  credentials: true // 是否允许发送Cookie
-}))
+
 //启动路由
 app.use(blog.routes()).use(label.routes()).use(leaveMessage.routes()).use(userInfo.routes())
 
