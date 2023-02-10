@@ -1,14 +1,12 @@
 const mongoose=require('mongoose')
-let url = "mongodb://localhost:27017/zfBlog"
-const Schema=mongoose.Schema
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-let MongoClient = require('mongodb').MongoClient
-MongoClient.connect(url, { useUnifiedTopology: true, useUnifiedTopology: true }, function(err, db) {
+let url = "mongodb+srv://zhangfeng:zf1234..@cluster0.rmkvqrx.mongodb.net/zfBlog"
+const Schema = mongoose.Schema
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
   if(err){
-    console.log(err,'数据库连接错误')
+    console.log(err)
     return
   }
-  console.log('连接数据库成功')
+  console.log('连接成功')
 })
 // 博客
 const Blog = new Schema({
