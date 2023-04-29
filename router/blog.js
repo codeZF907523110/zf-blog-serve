@@ -1,8 +1,8 @@
 /*
  * @Author: zhangfeng16 zhangfeng16@shuidi-inc.com
  * @Date: 2022-12-26 15:20:21
- * @LastEditors: 流觞曲水 907523110@qq.com
- * @LastEditTime: 2023-02-10 17:19:21
+ * @LastEditors: zhangfeng16 907523110@qq.com
+ * @LastEditTime: 2023-04-29 17:53:31
  * @FilePath: /zf-blog-server/router/router.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -66,8 +66,9 @@ router.post('/api/blog/uploadPictures', async (ctx) => {
   const reader = fs.createReadStream(file.path)
   const coverUrl = `/cover/${fileNames[0]}${new Date().getTime()}.${fileNames[1]}`
   const filePath = path.join(coverUrl)
+  const prePath = __dirname.replace('/router', '')
   // 创建可写流
-  const upStream = fs.createWriteStream(__dirname + `/static${coverUrl}`)
+  const upStream = fs.createWriteStream(prePath + `/static${coverUrl}`)
   // 可读流通过管道写入可写流
   reader.pipe(upStream)
   ctx.body={
@@ -79,7 +80,8 @@ router.post('/api/blog/uploadPictures', async (ctx) => {
 router.post('/api/blog/saveBlog', async (ctx) => {
   const body = ctx.request.body
   const fileUrl = `/md/${body.title}${new Date().getTime()}.md`
-  fs.writeFile(__dirname + `/static${fileUrl}`, body.text, (err, data) => {})
+  const prePath = __dirname.replace('/router', '')
+  fs.writeFile(prePath + `/static${fileUrl}`, body.text, (err, data) => {})
   await Blog.insertMany({
     ...ctx.request.body,
     blogUrl: baseUrl+fileUrl
