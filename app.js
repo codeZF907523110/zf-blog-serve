@@ -2,7 +2,7 @@
  * @Author: zhangfeng16 zhangfeng16@shuidi-inc.com
  * @Date: 2022-12-26 15:20:22
  * @LastEditors: zhangfeng16 907523110@qq.com
- * @LastEditTime: 2023-04-28 16:19:14
+ * @LastEditTime: 2023-04-28 16:20:20
  * @FilePath: /zf-blog-server/app.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -43,5 +43,5 @@ app.use(async ctx => {
 //   console.log('run 3006')
 // },'0.0.0.0')
 app.listen(3006, () => {
-  console.log('run 80')
+  console.log('run 3006')
 }, '0.0.0.0')
