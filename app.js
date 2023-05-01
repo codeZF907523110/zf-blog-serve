@@ -18,6 +18,7 @@ const label = require('./router/label.js')
 const leaveMessage = require('./router/leaveMessage.js')
 const userInfo = require('./router/userInfo.js')
 const cors = require('koa2-cors')
+require('./pushDate')
 //  证书
 const options = {
   // key: fs.readFileSync('./static/SSL/9207781_zfblog.top.key'),
