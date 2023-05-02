@@ -72,11 +72,10 @@ let Weather = new Promise((res, rej) => { //获取指定地区天气
 //     });
 // });
 //测试的时候可以改为    3 * * * * *   每分钟的第三秒执行一次
-schedule.scheduleJob('0 0 8 * * *', () => { //每天早上7点执行一次
+schedule.scheduleJob(' 1 * * * * *', () => { //每天早上7点执行一次
   Promise.all([AccessToken, Weather]).then((res) => {
-    console.log(res, '执行啦ressss');
     let data = {
-      touser: 'olCFH6GZHd6zBQW6W1Mtx097xvvM', //发送人的微信号ID（写你自己的）
+      touser: 'olCFH6GVsm8z3wFbUNvJdFCn1_E4', //发送人的微信号ID（写你自己的）
       template_id: 'mUucP3qJK5exhXnvVKnhjTcKLDYTzcjZMSpbHknrIiI', //测试模板的ID（写你自己的）
       data: {
         data1: { //多少天
@@ -137,7 +136,6 @@ schedule.scheduleJob('0 0 8 * * *', () => { //每天早上7点执行一次
         },
       }
     }
-    console.log(data, 'data')
     request({
         url: sendMessage + res[0],
         method: "post",
