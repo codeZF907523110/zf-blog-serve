@@ -72,7 +72,7 @@ let Weather = new Promise((res, rej) => { //获取指定地区天气
 //     });
 // });
 //测试的时候可以改为    3 * * * * *   每分钟的第三秒执行一次
-schedule.scheduleJob(' 30 * * * * *', () => { //每天早上7点执行一次
+schedule.scheduleJob(' * * 8 * * *', () => { //每天早上7点执行一次
   Promise.all([AccessToken, Weather]).then((res) => {
     let data = {
       touser: 'olCFH6GZHd6zBQW6W1Mtx097xvvM', //发送人的微信号ID（写你自己的）
