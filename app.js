@@ -2,7 +2,7 @@
  * @Author: zhangfeng16 zhangfeng16@shuidi-inc.com
  * @Date: 2022-12-26 15:20:22
  * @LastEditors: zhangfeng16 907523110@qq.com
- * @LastEditTime: 2023-04-28 16:20:20
+ * @LastEditTime: 2023-05-06 11:15:47
  * @FilePath: /zf-blog-server/app.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -17,6 +17,7 @@ const blog = require('./router/blog.js')
 const label = require('./router/label.js')
 const leaveMessage = require('./router/leaveMessage.js')
 const userInfo = require('./router/userInfo.js')
+const login = require('./router/login.js')
 const cors = require('koa2-cors')
 require('./pushDate')
 //  证书
@@ -35,7 +36,7 @@ app.use(koaBody({
 }))
 
 //启动路由
-app.use(blog.routes()).use(label.routes()).use(leaveMessage.routes()).use(userInfo.routes())
+app.use(blog.routes()).use(label.routes()).use(leaveMessage.routes()).use(userInfo.routes()).use(login.routes())
 app.use(async ctx => {
   ctx.body = 'Hello koa'
 });
