@@ -2,7 +2,7 @@
  * @Author: zhangfeng16 zhangfeng16@shuidi-inc.com
  * @Date: 2022-12-26 15:20:22
  * @LastEditors: zhangfeng16 907523110@qq.com
- * @LastEditTime: 2023-05-06 11:15:47
+ * @LastEditTime: 2023-05-16 10:54:59
  * @FilePath: /zf-blog-server/app.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -27,7 +27,7 @@ const options = {
 }
 app.use(cors())
 // 静态路由
-app.use(static(__dirname + '/static'))
+app.use(static('/usr/local/zfBlogStatic'))
 app.use(koaBody({ 
   multipart: true,
   formidable: {
