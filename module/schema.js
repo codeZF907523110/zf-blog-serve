@@ -2,7 +2,7 @@ const mongoose=require('mongoose')
 let url = "mongodb+srv://zhangfeng:zf1234..@cluster0.rmkvqrx.mongodb.net/zfBlog"
 // let url = "mongodb://localhost:27017/"
 const Schema = mongoose.Schema
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
+mongoose.connect(url, { useNewUrlParser: true,useCreateIndex: true, useUnifiedTopology: true }, (err) => {
   if(err){
     console.log(err)
     return

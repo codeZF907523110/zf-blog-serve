@@ -2,32 +2,34 @@
  * @Author: zhangfeng16 907523110@qq.com
  * @Date: 2023-05-06 11:10:14
  * @LastEditors: zhangfeng16 907523110@qq.com
- * @LastEditTime: 2023-05-06 15:38:03
+ * @LastEditTime: 2023-05-25 14:48:19
  * @FilePath: /zf-blog-serve/router/login.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 const Router = require('koa-router')
+const jwt = require('jsonwebtoken')
 const router = new Router()
 const axios = require('axios')
 const querystring = require("querystring")
 const bodyParser = require('koa-bodyparser')
 router.use(bodyParser())
 
-
 const config = {
   client_id: '0d93b9312fe7245afd1e', //github生成的ID及密码
   client_secret: '8ae014b0f570d796c081578386e5baacb0b6e69b'
 };
 let redirectPath = ''
+
+// github登录
 router.get('/api/github/login', async (ctx) => {
   if (ctx.query.path) redirectPath = ctx.query.path
-  var dataStr = (new Date()).valueOf();
   //重定向到认证接口,并配置参数
   var path = "https://github.com/login/oauth/authorize";
   path += '?client_id=' + config.client_id;
   //将地址及参数返回前端
   ctx.body = path;
 });
+
 //认证后的github回调
 router.get('/api/github/callback', async (ctx) => {
   console.log('callback...')
@@ -48,10 +50,22 @@ router.get('/api/github/callback', async (ctx) => {
       Authorization: `token ${access_token}`
     }
   })
+  const { secret } = require('../config/baseData')
+  const payload = {user: res.data.login, icon: res.data.avatar_url}
+  const token = jwt.sign(payload, secret, { expiresIn:  '24h' });
   // ctx.body = res.data
-  ctx.cookies.set('user', res.data.login) //用户名称
-  ctx.cookies.set('icon', res.data.avatar_url) //用户图片
+  ctx.cookies.set('user', res.data.login, { httpOnly: false, maxAge: 86400000 }) //用户名称
+  ctx.cookies.set('icon', res.data.avatar_url, { httpOnly: false, maxAge: 86400000 }) //用户图片
+  ctx.cookies.set('token', token, { maxAge: 86400000 }) //设置token
   ctx.redirect(redirectPath) //重定向到请求页面
+})
+
+// 登出
+router.get('/api/logOut', async (ctx) => {
+  ctx.cookies.set('user', '', { httpOnly: false, maxAge: 0 }) //用户名称
+  ctx.cookies.set('icon', '', { httpOnly: false, maxAge: 0 }) //用户图片
+  ctx.cookies.set('token', '', { maxAge: 0 }) //设置token
+  ctx.body = { success: true }
 })
 
 module.exports = router

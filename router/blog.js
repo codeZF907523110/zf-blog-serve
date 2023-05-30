@@ -2,19 +2,20 @@
  * @Author: zhangfeng16 zhangfeng16@shuidi-inc.com
  * @Date: 2022-12-26 15:20:21
  * @LastEditors: zhangfeng16 907523110@qq.com
- * @LastEditTime: 2023-05-16 10:55:58
+ * @LastEditTime: 2023-05-25 15:15:14
  * @FilePath: /zf-blog-server/router/router.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 const Router = require('koa-router')
 const fs = require('fs'); // 图片路径
 const path = require('path')
+const { getUserInfo } = require('../config/utils')
 
 //数据库模块
 const { Blog } = require('../module/schema.js')
 const bodyParser = require('koa-bodyparser')
 const router = new Router()//实例化router
-const baseUrl = require('../config/baseUrl')
+const { baseUrl } = require('../config/baseData')
 router.use(bodyParser())
 
 router.get('/', async (ctx) => {
@@ -23,8 +24,18 @@ router.get('/', async (ctx) => {
 
 // 点赞
 router.post('/api/blog/giveALike', async (ctx) => {
-  // await Blog.updateOne({_id})
-  ctx.body = "点赞啦"
+  const userInfo = getUserInfo(ctx)
+  let result = {}
+  const form = ctx.request.body
+  let data
+  // 点赞的情况
+  if (form.isAddLikePeople) {
+    data = await Blog.updateOne({ _id: form._id }, { $addToSet: { likePeople: userInfo.user } })
+  } else {
+    data = await Blog.updateOne({ _id: form._id }, { $pull: { likePeople: userInfo.user } })
+  }
+  if (data) result = { success: true }
+  ctx.body = result
 })
 
 // 增加文章阅读量
@@ -50,7 +61,7 @@ router.post('/api/blog/getAllBlog', async (ctx) => {
   } catch (error) {
   }
   try {
-    total = await Blog.find({}).count()
+    total = await Blog.find({}).countDocuments()
   } catch (error) {
   }
   ctx.body = {
