@@ -2,7 +2,7 @@
  * @Author: zhangfeng16 zhangfeng16@shuidi-inc.com
  * @Date: 2022-12-26 15:20:22
  * @LastEditors: zhangfeng16 907523110@qq.com
- * @LastEditTime: 2023-05-30 14:27:13
+ * @LastEditTime: 2023-06-01 15:58:54
  * @FilePath: /zf-blog-server/app.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -12,8 +12,13 @@ const jwt = require('jsonwebtoken')
 const cors = require('koa2-cors')
 const Koa=require('koa')
 const app = new Koa()
+const serve = require('koa-static')
+
+app.use(serve('/usr/local'))
+
 app.use(cors({
-  origin: "http://www.zfblog.top",
+  // origin: "http://www.zfblog.top",
+  origin: "http://localhost:5000",
   credentials: true
 }));
 
@@ -43,7 +48,8 @@ const whiteList = [
   '/api/blog/getAllBlog',
   '/api/label/getLabels',
   '/api/message/getMessages',
-  '/api/message/setMessage'
+  '/api/message/setMessage',
+  '/zfBlogStatic'
 ]
 // 验证token是否有效
 app.use((ctx, next) => {
