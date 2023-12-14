@@ -63,9 +63,9 @@ router.get('/api/github/callback', async (ctx) => {
 
 // 登出
 router.get('/api/logOut', async (ctx) => {
-  ctx.cookies.set('user', '', { httpOnly: false, maxAge: 0 }) //用户名称
-  ctx.cookies.set('icon', '', { httpOnly: false, maxAge: 0 }) //用户图片
-  ctx.cookies.set('token', '', { maxAge: 0 }) //设置token
+  ctx.cookies.set('user', '', { httpOnly: false, maxAge: 0, domain: 'zfblog.top' }) //用户名称
+  ctx.cookies.set('icon', '', { httpOnly: false, maxAge: 0, domain: 'zfblog.top' }) //用户图片
+  ctx.cookies.set('token', '', { maxAge: 0, domain: 'zfblog.top' }) //设置token
   ctx.body = { success: true }
 })
 
