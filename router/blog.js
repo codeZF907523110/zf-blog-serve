@@ -19,7 +19,7 @@ const { baseUrl } = require('../config/baseData')
 router.use(bodyParser())
 
 router.get('/', async (ctx) => {
-  ctx.body = 'aaaaaaaaaa'
+  ctx.body = '张峰的博客'
 })
 
 // 点赞

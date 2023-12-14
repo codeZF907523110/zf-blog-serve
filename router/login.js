@@ -55,9 +55,9 @@ router.get('/api/github/callback', async (ctx) => {
   const payload = {user: res.data.login, icon: res.data.avatar_url}
   const token = jwt.sign(payload, secret, { expiresIn:  '24h' });
   // ctx.body = res.data
-  ctx.cookies.set('user', res.data.login, { httpOnly: false, maxAge: 86400000 }) //用户名称
-  ctx.cookies.set('icon', res.data.avatar_url, { httpOnly: false, maxAge: 86400000 }) //用户图片
-  ctx.cookies.set('token', token, { maxAge: 86400000 }) //设置token
+  ctx.cookies.set('user', res.data.login, { httpOnly: false, maxAge: 86400000, domain: 'zfblog.top' }) //用户名称
+  ctx.cookies.set('icon', res.data.avatar_url, { httpOnly: false, maxAge: 86400000, domain: 'zfblog.top' }) //用户图片
+  ctx.cookies.set('token', token, { maxAge: 86400000, domain: 'zfblog.top' }) //设置token
   ctx.redirect(redirectPath) //重定向到请求页面
 })
 
