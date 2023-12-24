@@ -104,9 +104,9 @@ router.post('/api/blog/saveBlog', async (ctx) => {
 router.post('/api/blog/editBlog', async (ctx) => {
   const body = ctx.request.body
   const fileUrl = `/zfBlogStatic/md/${body.title}${new Date().getTime()}.md`
-  fs.writeFile(`http://zfblog.top/usr/local${fileUrl}`, body.text, (err, data) => {})
+  fs.writeFile(`/usr/local${fileUrl}`, body.text, (err, data) => {})
   body.blogUrl = baseUrl+fileUrl
-  data = await Blog.updateOne({ _id: body._id }, { $set: body })
+  await Blog.updateOne({ _id: body._id }, { $set: body })
   ctx.body = {
     msg: '修改成功',
     success: true
