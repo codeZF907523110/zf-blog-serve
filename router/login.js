@@ -22,12 +22,14 @@ let redirectPath = ''
 
 // github登录
 router.get('/api/github/login', async (ctx) => {
-  if (ctx.query.path) redirectPath = ctx.query.path
-  //重定向到认证接口,并配置参数
-  var path = "https://github.com/login/oauth/authorize";
-  path += '?client_id=' + config.client_id;
-  //将地址及参数返回前端
-  ctx.body = path;
+  // if (ctx.query.path) redirectPath = ctx.query.path
+  // //重定向到认证接口,并配置参数
+  // var path = "https://github.com/login/oauth/authorize";
+  // path += '?client_id=' + config.client_id;
+  // //将地址及参数返回前端
+  // ctx.body = path;
+  const result = { success: true }
+  ctx.body = result
 });
 
 //认证后的github回调

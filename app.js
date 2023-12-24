@@ -14,13 +14,12 @@ const Koa=require('koa')
 const app = new Koa()
 const serve = require('koa-static')
 
-app.use(serve('/usr/local'))
-
 app.use(cors({
   origin: "http://www.zfblog.top",
   // origin: "http://localhost:5000",
   credentials: true
 }));
+app.use(serve('/usr/local'))
 
 
 const koaBody=require('koa-body')
