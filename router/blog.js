@@ -9,7 +9,7 @@
 const Router = require('koa-router')
 const fs = require('fs'); // 图片路径
 const path = require('path')
-const { getUserInfo } = require('../config/utils')
+const { getUserInfo, checkIsAdmin } = require('../config/utils')
 
 //数据库模块
 const { Blog } = require('../module/schema.js')
@@ -72,6 +72,7 @@ router.post('/api/blog/getAllBlog', async (ctx) => {
 
 // 上传封面图片
 router.post('/api/blog/uploadPictures', async (ctx) => {
+  checkIsAdmin()
   const file = ctx.request.files.file
   const fileNames = file.name.split('.')
   const reader = fs.createReadStream(file.path)
@@ -87,6 +88,7 @@ router.post('/api/blog/uploadPictures', async (ctx) => {
 
 // 新增博客
 router.post('/api/blog/saveBlog', async (ctx) => {
+  checkIsAdmin()
   const body = ctx.request.body
   const fileUrl = `/zfBlogStatic/md/${body.title}${new Date().getTime()}.md`
   fs.writeFile(`/usr/local${fileUrl}`, body.text, (err, data) => {})
@@ -102,6 +104,7 @@ router.post('/api/blog/saveBlog', async (ctx) => {
 
 // 编辑博客
 router.post('/api/blog/editBlog', async (ctx) => {
+  checkIsAdmin()
   const body = ctx.request.body
   const fileUrl = `/zfBlogStatic/md/${body.title}${new Date().getTime()}.md`
   fs.writeFile(`/usr/local${fileUrl}`, body.text, (err, data) => {})

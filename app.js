@@ -48,7 +48,8 @@ const whiteList = [
   '/api/label/getLabels',
   '/api/message/getMessages',
   '/api/message/setMessage',
-  '/zfBlogStatic'
+  '/zfBlogStatic',
+  '/api/logOut'
 ]
 // 验证token是否有效
 app.use((ctx, next) => {

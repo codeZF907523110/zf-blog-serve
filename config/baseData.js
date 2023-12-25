@@ -11,3 +11,8 @@ exports.baseUrl = 'http://zfblog.top'
 
 // 默认jwt秘钥
 exports.secret = 'zf_blog'
+
+// 管理员权限的账号
+exports.adminList = [
+  'codeZF907523110'
+]

@@ -11,9 +11,11 @@ const router = new Router()
 const bodyParser = require('koa-bodyparser')
 router.use(bodyParser())
 const { Label } = require('../module/schema.js')
+const { checkIsAdmin } = require('../config/utils')
 
 // 添加标签
 router.post('/api/label/addLabel', async (ctx) => {
+  checkIsAdmin()
   let result = {}
   const { name } = ctx.request.body
   const data = await Label.insertMany({ name })

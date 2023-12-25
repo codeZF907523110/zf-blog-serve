@@ -1,11 +1,3 @@
-/*
- * @Author: zhangfeng16 907523110@qq.com
- * @Date: 2023-05-06 11:10:14
- * @LastEditors: zhangfeng16 907523110@qq.com
- * @LastEditTime: 2023-06-07 10:48:44
- * @FilePath: /zf-blog-serve/router/login.js
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 const Router = require('koa-router')
 const jwt = require('jsonwebtoken')
 const router = new Router()
@@ -13,6 +5,8 @@ const axios = require('axios')
 const querystring = require("querystring")
 const bodyParser = require('koa-bodyparser')
 router.use(bodyParser())
+const { getUserInfo } = require('../config/utils')
+const { adminList } = require('../config/baseData')
 
 const config = {
   client_id: '0d93b9312fe7245afd1e', //github生成的ID及密码
@@ -67,6 +61,17 @@ router.get('/api/logOut', async (ctx) => {
   ctx.cookies.set('icon', '', { httpOnly: false, maxAge: 0, domain: 'zfblog.top' }) //用户图片
   ctx.cookies.set('token', '', { maxAge: 0, domain: 'zfblog.top' }) //设置token
   ctx.body = { success: true }
+})
+
+// 判断是否是Admin
+router.get('/api/getIsAdmin', async (ctx) => {
+  const result = { isAdmin: false }
+  const { user } = getUserInfo(ctx)
+  if (adminList.includes(user)) result.isAdmin = true
+  ctx.body = {
+    data: result,
+    success: true
+  }
 })
 
 module.exports = router
