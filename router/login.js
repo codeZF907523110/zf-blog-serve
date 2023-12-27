@@ -21,7 +21,9 @@ router.get('/api/github/login', async (ctx) => {
   var path = "https://github.com/login/oauth/authorize";
   path += '?client_id=' + config.client_id;
   //将地址及参数返回前端
-  ctx.body = path;
+  ctx.body = {
+    path
+  }
 });
 
 //认证后的github回调
@@ -44,7 +46,7 @@ router.get('/api/github/callback', async (ctx) => {
       Authorization: `token ${access_token}`
     }
   })
-  console.log(res, '这是登录信息哦')
+  // console.log(res, '这是登录信息哦')
   const { secret } = require('../config/baseData')
   const payload = {user: res.data.login, icon: res.data.avatar_url}
   const token = jwt.sign(payload, secret, { expiresIn:  '24h' });

@@ -8,26 +8,11 @@
  */
 const jwt = require('jsonwebtoken')
 const { secret } = require('./baseData')
-const { adminList } = require('../config/baseData')
 
-const getUserInfo = (ctx) => {
+exports.getUserInfo = (ctx) => {
   try {
     return jwt.verify(ctx.cookies.get('token'), secret)
   } catch (error) {
     return {}
   }
 }
-
-exports.checkIsAdmin = (ctx) => {
-  const { user } = getUserInfo(ctx)
-  if (adminList.includes(user)) {
-    return true
-  } else {
-    ctx.body = {
-      data: null,
-      success: false,
-      message: '无操作权限'
-    }
-  }
-}
-exports.getUserInfo = getUserInfo

@@ -7,7 +7,6 @@
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 const { secret } = require('./config/baseData')
-const koaJwt = require('koa-jwt')
 const jwt = require('jsonwebtoken')
 const cors = require('koa2-cors')
 const Koa=require('koa')
@@ -29,6 +28,9 @@ const label = require('./router/label.js')
 const leaveMessage = require('./router/leaveMessage.js')
 const userInfo = require('./router/userInfo.js')
 const login = require('./router/login.js')
+const { getUserInfo } = require('./config/utils.js')
+const { adminList } = require('./config/baseData')
+
 // require('./pushDate')
 
 app.use(koaBody({ 
@@ -73,17 +75,33 @@ app.use((ctx, next) => {
   }
 });
 
-// 路由权限控制 除了path里的路径不需要验证token 其他都要
-// app.use(
-//   koaJwt({
-//     secret
-//   }).unless({
-//     path: whiteList
-//   })
-// )
+const authRouterList = [
+  '/api/blog/editBlog',
+  '/api/blog/uploadPictures',
+  '/api/blog/saveBlog',
+  '/api/label/addLabel',
+  '/api/label/getLabels'
+]
+
+app.use((ctx, next) => {
+  if (authRouterList.some(item => ctx.request.url.includes(item))) {
+    return next()
+  }
+  const { user } = getUserInfo(ctx)
+  if (!adminList.includes(user)) {
+    console.log(user, '无操作权限啊')
+    ctx.body = {
+      success: false,
+      message: '无操作权限'
+    }
+  } else {
+    return next()
+  }
+})
 
 //启动路由
 app.use(blog.routes()).use(label.routes()).use(leaveMessage.routes()).use(userInfo.routes()).use(login.routes())
+
 
 app.use(async ctx => {
   ctx.body = 'Hello koa'
