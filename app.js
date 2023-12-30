@@ -84,7 +84,7 @@ const authRouterList = [
 ]
 
 app.use((ctx, next) => {
-  if (authRouterList.some(item => ctx.request.url.includes(item))) {
+  if (authRouterList.some(item => !ctx.request.url.includes(item))) {
     return next()
   }
   const { user } = getUserInfo(ctx)
