@@ -44,6 +44,7 @@ app.use(koaBody({
 const whiteList = [
   '/api/github/login',
   '/api/github/callback',
+  '/api/qq/callback',
   '/api/userInfo/getUserInfo',
   '/api/blog/addOpenNum',
   '/api/blog/getAllBlog',
@@ -51,7 +52,8 @@ const whiteList = [
   '/api/message/getMessages',
   '/api/message/setMessage',
   '/zfBlogStatic',
-  '/api/logOut'
+  '/api/logOut',
+  '/api/QQ/login'
 ]
 // 验证token是否有效
 app.use((ctx, next) => {

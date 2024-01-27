@@ -14,6 +14,7 @@ const config = {
 };
 let redirectPath = ''
 
+
 // github登录
 router.get('/api/github/login', async (ctx) => {
   if (ctx.query.path) redirectPath = ctx.query.path
@@ -25,6 +26,38 @@ router.get('/api/github/login', async (ctx) => {
     path
   }
 });
+
+// QQ登录回调
+router.get('/api/qq/callback', async(ctx) => {
+  ctx.body = {
+    success: true
+  }
+  ctx.redirect('http://www.zfblog.top/display/technology?label=%E5%85%A8%E9%83%A8')
+})
+
+// QQ登录
+router.get('/api/QQ/login', async(ctx) => {
+  const { access_token, expires_in } = ctx.query
+  // client_id: appid，openid
+  let { data } = await axios.get(`https://graph.qq.com/oauth2.0/me?access_token=${access_token}&fm=json`)
+  const jsonStr = data.replace('callback(', '').replace(')', '').replace(';', '').trim(); // 去掉开头的callback和结尾的括号  
+  const obj = JSON.parse(jsonStr);
+  const client_id = obj.client_id; // 102086457  
+  const openid = obj.openid; // 768C400BA6E3B19E2EAD6B3B87CBFC88  
+  let res = await axios.get(`https://graph.qq.com/user/get_user_info?access_token=${access_token}&oauth_consumer_key=${client_id}&openid=${openid}`)
+  const user = encodeURI(res.data.nickname)
+  const icon = res.data.figureurl
+  const { secret } = require('../config/baseData')
+  const payload = {user, icon}
+  const token = jwt.sign(payload, secret, { expiresIn:  '24h' });
+  ctx.cookies.set('user', user, { httpOnly: false, maxAge: 86400000, domain: 'zfblog.top' }) //用户名称
+  ctx.cookies.set('icon', icon, { httpOnly: false, maxAge: 86400000, domain: 'zfblog.top' }) //用户图片
+  ctx.cookies.set('token', token, { maxAge: 86400000, domain: 'zfblog.top' }) //设置token
+  // ctx.redirect('http://www.zfblog.top/')
+  ctx.body = {
+    success: true
+  }
+})
 
 //认证后的github回调
 router.get('/api/github/callback', async (ctx) => {
