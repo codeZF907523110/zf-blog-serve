@@ -45,12 +45,12 @@ router.get('/api/QQ/login', async(ctx) => {
   const client_id = obj.client_id; // 102086457  
   const openid = obj.openid; // 768C400BA6E3B19E2EAD6B3B87CBFC88  
   let res = await axios.get(`https://graph.qq.com/user/get_user_info?access_token=${access_token}&oauth_consumer_key=${client_id}&openid=${openid}`)
-  const user = encodeURI(res.data.nickname)
+  const user = res.data.nickname
   const icon = res.data.figureurl
   const { secret } = require('../config/baseData')
   const payload = {user, icon}
   const token = jwt.sign(payload, secret, { expiresIn:  '24h' });
-  ctx.cookies.set('user', user, { httpOnly: false, maxAge: 86400000, domain: 'zfblog.top' }) //用户名称
+  ctx.cookies.set('user', encodeURI(user), { httpOnly: false, maxAge: 86400000, domain: 'zfblog.top' }) //用户名称
   ctx.cookies.set('icon', icon, { httpOnly: false, maxAge: 86400000, domain: 'zfblog.top' }) //用户图片
   ctx.cookies.set('token', token, { maxAge: 86400000, domain: 'zfblog.top' }) //设置token
   // ctx.redirect('http://www.zfblog.top/')
