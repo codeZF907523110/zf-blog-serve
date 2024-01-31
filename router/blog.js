@@ -60,7 +60,10 @@ router.post('/api/blog/getAllBlog', async (ctx) => {
   } catch (error) {
   }
   try {
-    total = await Blog.find({}).countDocuments()
+    total = await Blog.find({
+      labels: form.labels ? form.labels : {$ne: null},
+      _id: form._id ? form._id : {$ne: null}
+    }).countDocuments()
   } catch (error) {
   }
   ctx.body = {

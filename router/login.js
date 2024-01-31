@@ -87,7 +87,10 @@ router.get('/api/github/callback', async (ctx) => {
   ctx.cookies.set('user', res.data.login, { httpOnly: false, maxAge: 86400000, domain: 'zfblog.top' }) //用户名称
   ctx.cookies.set('icon', res.data.avatar_url, { httpOnly: false, maxAge: 86400000, domain: 'zfblog.top' }) //用户图片
   ctx.cookies.set('token', token, { maxAge: 86400000, domain: 'zfblog.top' }) //设置token
-  ctx.redirect(redirectPath) //重定向到请求页面
+  ctx.body = {
+    success: true,
+    msg: '登录成功'
+  }
 })
 
 // 登出

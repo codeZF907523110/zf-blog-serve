@@ -14,5 +14,6 @@ exports.secret = 'zf_blog'
 
 // 管理员权限的账号
 exports.adminList = [
-  'codeZF907523110'
+  'codeZF907523110',
+  encodeURI('流觞曲水')
 ]
